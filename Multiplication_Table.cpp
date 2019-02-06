@@ -50,7 +50,7 @@ int main() {
 
 	// Print the array (full array notation).
 	cout << left;
-	cout << setw(3) << " ";
+	cout <<  "    ";
 
 	//prints the numbers above the columns
 	for (int i = 1; i <= width; i++) {
@@ -58,9 +58,9 @@ int main() {
 	}
 	cout << endl;
 	//seperates the column numbers from the table
-	cout << setw(3) << " ";
+	cout << "---+";
 	for (int i = 1; i <= width; i++) {
-		cout << setw(4) << "---+";
+		cout << "---+";
 	}
 	cout << endl;
 
