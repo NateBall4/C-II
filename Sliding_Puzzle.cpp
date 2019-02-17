@@ -23,6 +23,8 @@ using namespace std;
 
 #define UNSET			-1		// used to arbitrarily indicate an undetermined state in a constuct
 
+#define SCRAMBLE		1000000
+
 #define COLOR_DEFAULT	7
 #define COLOR_RED		12
 #define COLOR_GREEN		10
@@ -123,6 +125,7 @@ void PrintBoard(int theBoard[NUM_ROWS][NUM_COLS], HANDLE CurrentConsole) {
 			counter++;
 		}
 	}
+	SetConsoleTextAttribute(CurrentConsole, COLOR_DEFAULT);
 }
 
 bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
@@ -206,7 +209,7 @@ void scrambleBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 	srand((unsigned)time(NULL));
 	int move;
 
-		for (int i = 0; i < 100000; i++) //Series of random moves
+		for (int i = 0; i < SCRAMBLE; i++) //Series of random moves
 		{
 			move = rand() % 8 + 1;
 			slideTile(theBoard, move);
@@ -265,6 +268,7 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 //		return false;
 //	}
 //}
+
 // EXTRAS
 void printTheRainbow() {
 	int currentColor = 7;
