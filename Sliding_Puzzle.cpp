@@ -34,7 +34,7 @@ void PrintBoard(int[NUM_ROWS][NUM_COLS], HANDLE);
 bool slideTile(int[NUM_ROWS][NUM_COLS], int);
 void scrambleBoard(int[NUM_ROWS][NUM_COLS]);				// depends upon slideTile()
 bool isBoardSolved(int[NUM_ROWS][NUM_COLS]);		// indicates if the board is in the SOLVED state
-bool isSolvable(int[NUM_ROWS][NUM_COLS]);
+//bool isSolvable(int[NUM_ROWS][NUM_COLS]);
 
 													// DEVELOPMENT EXTRAS
 void printTheRainbow();								// A little reminder on how to do color with the Windows API.
@@ -51,20 +51,21 @@ int main() {
 	InitializeBoard(slidingBoard);				// initializes the board
 	PrintBoard(slidingBoard, currentConsole);					// prints the board
 	
-	cout << "Press any key to start!" << endl;
+	cout << endl;
+	cout << "Press any key to start!" << endl; //start prompt
 	_getch();
 
-	scrambleBoard(slidingBoard);
-	isSolvable(slidingBoard);
-	system("cls");
-	PrintBoard(slidingBoard, currentConsole);
+	scrambleBoard(slidingBoard); // scrambles the board
+	//isSolvable(slidingBoard); //checks to see if scambled board is solvable
+	system("cls"); // clears screen
+	PrintBoard(slidingBoard, currentConsole); //prints new board
 
-	while (isSolvable == false) {
-		scrambleBoard(slidingBoard);
-		isSolvable(slidingBoard);
-	}
+	//while (isSolvable == false) { //if board is unsolvable is rescrambles
+	//	scrambleBoard(slidingBoard);
+	//	isSolvable(slidingBoard);
+	//}
 
-	while (isBoardSolved(slidingBoard) == false) {
+	while (isBoardSolved(slidingBoard) == false) { // while board is unsolved continue game
 		cout << endl << "what direction would you like to move?: " << endl;
 		cin >> directionCode;
 
@@ -83,7 +84,7 @@ int main() {
 	}
 	
 	system("cls"); //clears the screen
-	PrintBoard(slidingBoard, currentConsole);
+	PrintBoard(slidingBoard, currentConsole); // prints the solved board
 	cout << "congrats you win!";
 	_getch();											// Exit
 	return 0;
@@ -96,7 +97,7 @@ void InitializeBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
 			if (counter == NUM_ROWS * NUM_COLS) { 
-				theBoard[i][j] = PIVOT_SYMBOL;
+				theBoard[i][j] = PIVOT_SYMBOL; // at the last space print the pivot symbol
 			}
 			else {
 				theBoard[i][j] = counter++;
@@ -107,12 +108,19 @@ void InitializeBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 
 void PrintBoard(int theBoard[NUM_ROWS][NUM_COLS], HANDLE CurrentConsole) {
 	// YOUR IMPLEMENTATION GOES HERE...
-	int counter = 0;
+	int counter = 1; // used to teast is the pieces are in the right space
 
 	for (int i = 0; i < NUM_ROWS; i++) {
 		cout << endl;
 		for (int j = 0; j < NUM_COLS; j++) {
-			cout << theBoard[i][j] << "|";
+			if (theBoard[i][j] == counter) {
+				SetConsoleTextAttribute(CurrentConsole, COLOR_GREEN); // if number is in the right space make it green
+			}
+			else {
+				SetConsoleTextAttribute(CurrentConsole, COLOR_RED); // else make it red
+			}
+			cout << setw(3) <<theBoard[i][j]; // prints the board
+			counter++;
 		}
 	}
 }
@@ -213,13 +221,13 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
 			
-			if (amISolved[i][j] == counter) {
+			if (amISolved[i][j] == counter) { // if the piece is in the right spot solved = true
 				solved = true;
 			}
-			else if (counter == 9 && amISolved[NUM_ROWS][NUM_COLS] == 0 && solved == true) {
+			else if (counter == (NUM_ROWS * NUM_COLS) && amISolved[NUM_ROWS][NUM_COLS] == 0 && solved == true) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
 				solved = true;
 			}
-			else {
+			else { // else the board is not solved
 				solved = false;
 			}
 			counter++;
@@ -228,35 +236,35 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 	return solved;
 }
 
-bool isSolvable(int board[NUM_ROWS][NUM_COLS]) {
-	const int num = NUM_ROWS * NUM_COLS;
-	int arr[num];
-
-	for (int i = 0; i < NUM_ROWS; i++) {
-		for (int j = 0; j < NUM_COLS; j++) {
-			arr[i * NUM_COLS + j] = board[i][j];
-		}
-	}
-
-	int inv_count = 0;
-	for (int i = 0; i < NUM_ROWS * NUM_COLS - 1; i++)
-	{
-		for (int j = i + 1; j < NUM_ROWS * NUM_COLS; j++)
-		{
-			// count pairs(i, j) such that i appears 
-			// before j, but i > j. 
-			if (arr[j] && arr[i] && arr[i] > arr[j])
-				inv_count++;
-		}
-	}
-
-	if (inv_count % 2 == 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
+//bool isSolvable(int board[NUM_ROWS][NUM_COLS]) {
+//	const int num = NUM_ROWS * NUM_COLS;
+//	int arr[num];
+//
+//	for (int i = 0; i < NUM_ROWS; i++) {
+//		for (int j = 0; j < NUM_COLS; j++) {
+//			arr[i * NUM_COLS + j] = board[i][j];
+//		}
+//	}
+//
+//	int inv_count = 0;
+//	for (int i = 0; i < NUM_ROWS * NUM_COLS - 1; i++)
+//	{
+//		for (int j = i + 1; j < NUM_ROWS * NUM_COLS; j++)
+//		{
+//			// count pairs(i, j) such that i appears 
+//			// before j, but i > j. 
+//			if (arr[j] && arr[i] && arr[i] > arr[j])
+//				inv_count++;
+//		}
+//	}
+//
+//	if (inv_count % 2 == 0) {
+//		return true;
+//	}
+//	else {
+//		return false;
+//	}
+//}
 // EXTRAS
 void printTheRainbow() {
 	int currentColor = 7;
