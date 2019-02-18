@@ -13,7 +13,7 @@ using namespace std;
 #define NUM_COLS		3		// should not be changed for this soultion
 
 #define PIVOT -1				// used to mark the pivot spot (blank area) on the puzzle
-#define PIVOT_SYMBOL	0		// used to show the pivot location when drawing the board
+#define PIVOT_SYMBOL	'*'		// used to show the pivot location when drawing the board
 
 // direction codes (part of the slideTile() interface)
 #define SLIDE_UP		8		// pass to slideTile() to trigger UP movement
@@ -53,28 +53,28 @@ int main() {
 	PrintBoard(slidingBoard, currentConsole);					// prints the board
 
 	cout << endl;
-	cout << "Press any key to start!" << endl; //start prompt
+	cout << "Press any key to start!" << endl;	//start prompt
 	_getch();
 
-	scrambleBoard(slidingBoard); // scrambles the board
+	scrambleBoard(slidingBoard);				// scrambles the board
 
-	system("cls"); // clears screen
-	PrintBoard(slidingBoard, currentConsole); //prints new board
+	system("cls");								 // clears screen
+	PrintBoard(slidingBoard, currentConsole);	//prints new board
 
 	while (isBoardSolved(slidingBoard) == false) { // while board is unsolved continue game
 		cout << endl << "what direction would you like to move?: " << endl;
 		cin >> directionCode;
 
-		system("cls"); //clears the screen
+		system("cls");							//clears the screen
 
-		slideTile(slidingBoard, directionCode);
-		PrintBoard(slidingBoard, currentConsole);
+		slideTile(slidingBoard, directionCode); // slides tile
+		PrintBoard(slidingBoard, currentConsole); // prints the board
 	}
 
 	system("cls"); //clears the screen
-	PrintBoard(slidingBoard, currentConsole); // prints the solved board
+	PrintBoard(slidingBoard, currentConsole);	// prints the solved board
 	cout << endl;
-	cout << "congrats you win!";
+	cout << "congrats you win!";				// win message
 	_getch();									// Exit
 	return 0;
 }
@@ -105,10 +105,19 @@ void PrintBoard(int theBoard[NUM_ROWS][NUM_COLS], HANDLE CurrentConsole) {
 			if (theBoard[i][j] == counter) {
 				SetConsoleTextAttribute(CurrentConsole, COLOR_GREEN); // if number is in the right space make it green
 			}
+			else if (theBoard[i][j] == PIVOT_SYMBOL) { // makes the pivot symbol the default color
+				SetConsoleTextAttribute(CurrentConsole, COLOR_DEFAULT);
+			}
 			else {
 				SetConsoleTextAttribute(CurrentConsole, COLOR_RED); // else make it red
 			}
-			cout << setw(3) << theBoard[i][j]; // prints the board
+
+			if (theBoard[i][j] == PIVOT_SYMBOL) { // if the board location is the pivot symbol print it as a char
+				cout << setw(3) << (char)theBoard[i][j];
+			}
+			else { // prints the board
+				cout << setw(3) << theBoard[i][j]; 
+			}
 			counter++;
 		}
 	}
@@ -212,11 +221,11 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
 
-			if (amISolved[i][j] == counter) { // if the piece is in the right spot solved = true
+			if (amISolved[i][j] == counter) { // if the piece is in the right spot solved = true wincounter increases
 				solved = true;
-				winCount++;
+				winCount++; // used to measure if the player has won (E.X. a 3 x 3 board has a win count of 8 since there are 8 pieces)
 			}
-			else if (counter == (NUM_ROWS * NUM_COLS)  && winCount == ((NUM_ROWS * NUM_COLS) - 1)) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
+			else if (counter == (NUM_ROWS * NUM_COLS)  && winCount == ((NUM_ROWS * NUM_COLS) - 1)) { // if all pieces are in the right spot and the wincount is complete you win
 				solved = true;
 			}
 			else { // else the board is not solved
