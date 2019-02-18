@@ -5,7 +5,7 @@
 using namespace std;
 
 #include <string.h>				// for strcpy()
-#include <conio.h>				// for getche()
+#include <conio.h>				// for getch()
 
 #include <windows.h>			// for COLOR!
 
@@ -62,9 +62,19 @@ int main() {
 	PrintBoard(slidingBoard, currentConsole);	//prints new board
 
 	while (isBoardSolved(slidingBoard) == false) { // while board is unsolved continue game
-		cout << endl << "what direction would you like to move?: " << endl;
+		cout << endl;
+		cout << "Please use the numpad arrows to move." << endl;
+		cout << "what direction would you like to move?: " << endl;
 		cin >> directionCode;
 
+		while (cin.fail() == true) { // if input wasn't a number clear input and reprompt
+			cout << "That wasn't a number" << endl;
+			cin.clear();
+			rewind(stdin);
+			cout << "Please use the numpad arrows to move." << endl;
+			cout << "what direction would you like to move?: " << endl;
+			cin >> directionCode;
+		}
 		system("cls");							//clears the screen
 
 		slideTile(slidingBoard, directionCode); // slides tile
@@ -202,7 +212,7 @@ bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
 
 void scrambleBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 	// YOUR IMPLEMENTATION GOES HERE...
-	srand((unsigned)time(NULL));
+	srand((unsigned int)time(NULL));
 	int move;
 
 	for (int i = 0; i < SCRAMBLE; i++) //Series of random moves
