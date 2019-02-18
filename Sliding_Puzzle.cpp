@@ -36,7 +36,6 @@ void PrintBoard(int[NUM_ROWS][NUM_COLS], HANDLE);
 bool slideTile(int[NUM_ROWS][NUM_COLS], int);
 void scrambleBoard(int[NUM_ROWS][NUM_COLS]);				// depends upon slideTile()
 bool isBoardSolved(int[NUM_ROWS][NUM_COLS]);		// indicates if the board is in the SOLVED state
-//bool isSolvable(int[NUM_ROWS][NUM_COLS]);
 
 													// DEVELOPMENT EXTRAS
 void printTheRainbow();								// A little reminder on how to do color with the Windows API.
@@ -52,20 +51,15 @@ int main() {
 
 	InitializeBoard(slidingBoard);				// initializes the board
 	PrintBoard(slidingBoard, currentConsole);					// prints the board
-	
+
 	cout << endl;
 	cout << "Press any key to start!" << endl; //start prompt
 	_getch();
 
 	scrambleBoard(slidingBoard); // scrambles the board
-	//isSolvable(slidingBoard); //checks to see if scambled board is solvable
+
 	system("cls"); // clears screen
 	PrintBoard(slidingBoard, currentConsole); //prints new board
-
-	//while (isSolvable == false) { //if board is unsolvable is rescrambles
-	//	scrambleBoard(slidingBoard);
-	//	isSolvable(slidingBoard);
-	//}
 
 	while (isBoardSolved(slidingBoard) == false) { // while board is unsolved continue game
 		cout << endl << "what direction would you like to move?: " << endl;
@@ -73,32 +67,25 @@ int main() {
 
 		system("cls"); //clears the screen
 
-												// Seed the Pseudo-Random Number Generator (system clock)
 		slideTile(slidingBoard, directionCode);
 		PrintBoard(slidingBoard, currentConsole);
-												// Driver Logic
-												// 1.) This is the part where you show the board, get the moves, process the moves, and re-draw
-												//  the board each time something changes.  This is the core logic of the simulation and
-												//  none of the problem specific calculations should take place in main().  Instead,
-												//  main() should consist of a series of controlled calls to your functions that
-												//  orchestrate the top-level behavior of the simulation.
-
 	}
-	
+
 	system("cls"); //clears the screen
 	PrintBoard(slidingBoard, currentConsole); // prints the solved board
+	cout << endl;
 	cout << "congrats you win!";
-	_getch();											// Exit
+	_getch();									// Exit
 	return 0;
 }
 
 void InitializeBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 	// YOUR IMPLEMENTATION GOES HERE...
-	int counter = 1; 
+	int counter = 1;
 
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
-			if (counter == NUM_ROWS * NUM_COLS) { 
+			if (counter == NUM_ROWS * NUM_COLS) {
 				theBoard[i][j] = PIVOT_SYMBOL; // at the last space print the pivot symbol
 			}
 			else {
@@ -121,7 +108,7 @@ void PrintBoard(int theBoard[NUM_ROWS][NUM_COLS], HANDLE CurrentConsole) {
 			else {
 				SetConsoleTextAttribute(CurrentConsole, COLOR_RED); // else make it red
 			}
-			cout << setw(3) <<theBoard[i][j]; // prints the board
+			cout << setw(3) << theBoard[i][j]; // prints the board
 			counter++;
 		}
 	}
@@ -154,7 +141,7 @@ bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
 			theBoard[emptyRow - 1][emptyCol] = PIVOT_SYMBOL;
 		}
 		else { //if not don't
-			//do nothing
+			   //do nothing
 		}
 		break;
 	}
@@ -168,7 +155,7 @@ bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
 			theBoard[emptyRow + 1][emptyCol] = PIVOT_SYMBOL;
 		}
 		else {// if not don't
-			//do nothing
+			  //do nothing
 		}
 		break;
 	}
@@ -182,7 +169,7 @@ bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
 			theBoard[emptyRow][emptyCol + 1] = PIVOT_SYMBOL;
 		}
 		else {// if not don't
-			//do nothing
+			  //do nothing
 		}
 		break;
 	}
@@ -196,7 +183,7 @@ bool slideTile(int theBoard[NUM_ROWS][NUM_COLS], int slideDirection) {
 			theBoard[emptyRow][emptyCol - 1] = PIVOT_SYMBOL;
 		}
 		else {// if not don't
-			//do nothing
+			  //do nothing
 		}
 		break;
 	}
@@ -209,11 +196,11 @@ void scrambleBoard(int theBoard[NUM_ROWS][NUM_COLS]) {
 	srand((unsigned)time(NULL));
 	int move;
 
-		for (int i = 0; i < SCRAMBLE; i++) //Series of random moves
-		{
-			move = rand() % 8 + 1;
-			slideTile(theBoard, move);
-		}
+	for (int i = 0; i < SCRAMBLE; i++) //Series of random moves
+	{
+		move = rand() % 8 + 1;
+		slideTile(theBoard, move);
+	}
 }
 
 bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
@@ -224,12 +211,12 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
-			
+
 			if (amISolved[i][j] == counter) { // if the piece is in the right spot solved = true
 				solved = true;
 				winCount++;
 			}
-			else if (counter == (NUM_ROWS * NUM_COLS) && amISolved[NUM_ROWS][NUM_COLS] == PIVOT_SYMBOL && winCount == ((NUM_ROWS * NUM_COLS)-1 )) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
+			else if (counter == (NUM_ROWS * NUM_COLS)  && winCount == ((NUM_ROWS * NUM_COLS) - 1)) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
 				solved = true;
 			}
 			else { // else the board is not solved
@@ -242,35 +229,6 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 	return solved;
 }
 
-//bool isSolvable(int board[NUM_ROWS][NUM_COLS]) {
-//	const int num = NUM_ROWS * NUM_COLS;
-//	int arr[num];
-//
-//	for (int i = 0; i < NUM_ROWS; i++) {
-//		for (int j = 0; j < NUM_COLS; j++) {
-//			arr[i * NUM_COLS + j] = board[i][j];
-//		}
-//	}
-//
-//	int inv_count = 0;
-//	for (int i = 0; i < NUM_ROWS * NUM_COLS - 1; i++)
-//	{
-//		for (int j = i + 1; j < NUM_ROWS * NUM_COLS; j++)
-//		{
-//			// count pairs(i, j) such that i appears 
-//			// before j, but i > j. 
-//			if (arr[j] && arr[i] && arr[i] > arr[j])
-//				inv_count++;
-//		}
-//	}
-//
-//	if (inv_count % 2 == 0) {
-//		return true;
-//	}
-//	else {
-//		return false;
-//	}
-//}
 
 // EXTRAS
 void printTheRainbow() {
