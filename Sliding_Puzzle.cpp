@@ -220,18 +220,21 @@ bool isBoardSolved(int amISolved[NUM_ROWS][NUM_COLS]) {
 	// YOUR IMPLEMENTATION GOES HERE...
 	bool solved = false;
 	int counter = 1;
+	int winCount = 0;
 
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
 			
 			if (amISolved[i][j] == counter) { // if the piece is in the right spot solved = true
 				solved = true;
+				winCount++;
 			}
-			else if (counter == (NUM_ROWS * NUM_COLS) && amISolved[NUM_ROWS][NUM_COLS] == 0 && solved == true) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
+			else if (counter == (NUM_ROWS * NUM_COLS) && amISolved[NUM_ROWS][NUM_COLS] == PIVOT_SYMBOL && winCount == ((NUM_ROWS * NUM_COLS)-1 )) { // if all pieces are in the right spot and the last spot is the pivot symbol you win
 				solved = true;
 			}
 			else { // else the board is not solved
 				solved = false;
+				winCount = 0;
 			}
 			counter++;
 		}
