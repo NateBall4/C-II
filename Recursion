@@ -1,0 +1,50 @@
+// INCLUES AND NAMESPACES
+#include <iostream>
+#include<conio.h>
+using namespace std;
+
+// CONSTANTS
+const int STRING_SIZE = 100;
+
+// PROTOTYPES
+int ReverseStringRecursive(char*);
+
+// MAIN
+int main() {
+	// create a string
+	char someString[STRING_SIZE] = "abcdefghijklmnopqrstuvwxyz";
+
+	// display the string before being reversed
+	cout << "The string contains: " << endl;
+	cout << someString << endl << endl;
+
+	// make the call to the recursive function
+	cout << "CALL THE REVERSING FUNCTION" << endl << endl;
+	ReverseStringRecursive(someString);
+
+	// display the string after being reversed
+	cout << "The string contains: " << endl;
+	cout << someString << endl;
+
+	// exit program
+	_getch();
+	return 0;
+}
+
+// FUNCTION IMPLEMENTATIONS
+int ReverseStringRecursive(char* reverseMe) {
+	// YOUR IMPLEMENTATION GOES HERE...
+	char holder = ' ';
+	int position = 0;
+
+		
+
+		if (reverseMe == " ") {
+			return 1;
+		}
+		else {
+
+		}
+
+		return ReverseStringRecursive(reverseMe - 1);
+}
