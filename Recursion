@@ -12,7 +12,7 @@ int ReverseStringRecursive(char*);
 // MAIN
 int main() {
 	// create a string
-	char someString[STRING_SIZE] = "abcdefghijklmnopqrstuvwxyz";
+	char someString[STRING_SIZE] = "abc";
 
 	// display the string before being reversed
 	cout << "The string contains: " << endl;
@@ -34,17 +34,23 @@ int main() {
 // FUNCTION IMPLEMENTATIONS
 int ReverseStringRecursive(char* reverseMe) {
 	// YOUR IMPLEMENTATION GOES HERE...
-	char holder = ' ';
 	int position = 0;
+	char holder = ' ';
 
-		
-
-		if (reverseMe == " ") {
+		if (reverseMe[0] == '\0') {
 			return 1;
 		}
 		else {
-
+			holder = reverseMe[position];
 		}
 
-		return ReverseStringRecursive(reverseMe - 1);
+		reverseMe[position] = ' ';
+		ReverseStringRecursive(reverseMe + 1);
+
+		while (reverseMe[position] != '\0') {
+			position++;
+		}
+		reverseMe[position] = holder;
+
+		return position;
 }
